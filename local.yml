@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  connection: local
+  become: true
+  gather_facts: false
+  tasks:
+    - name: "Install midnight commander"
+      package:
+        name: mc
+        state: present
