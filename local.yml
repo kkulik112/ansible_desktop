@@ -4,7 +4,39 @@
   become: true
   gather_facts: false
   tasks:
-    - name: "Install midnight commander"
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+    # --- MC ---
+    - name: Install midnight commander
       package:
         name: mc
         state: present
+     # --- Steam ---
+    - name: Ensure multiverse repo is enabled
+      apt_repository:
+        repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
+        state: present
+
+    - name: Install Steam
+      apt:
+        name: steam
+        state: present
+    # --- Snap + Spotify ---
+    - name: Install snapd
+      apt:
+        name: snapd
+        state: present
+
+    - name: Ensure snapd is running
+      systemd:
+        name: snapd
+        enabled: yes
+        state: started
+
+    - name: Install Spotify via snap
+      community.general.snap:
+        name: spotify
+        state: present
+
+    
