@@ -2,7 +2,7 @@
 - hosts: localhost
   connection: local
   become: true
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: Update apt cache
       apt:
@@ -13,9 +13,13 @@
         name: mc
         state: present
      # --- Steam ---
+    - name: Ensure multiverse repository is enabled
+      apt_repository:
+        repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
+        state: present
     - name: Install Steam
       apt:
-        name: steam
+        name: steam-installer
         state: present
     # --- Snap + Spotify ---
     - name: Install snapd
