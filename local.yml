@@ -13,10 +13,23 @@
         name: mc
         state: present
      # --- Steam ---
-    - name: Ensure multiverse repository is enabled
+    - name: Enable i386 architecture
+      command: dpkg --add-architecture i386
+
+    - name: Ensure main Ubuntu repos (including multiverse) are enabled
       apt_repository:
-        repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
+        repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} main universe multiverse restricted"
         state: present
+
+    - name: Ensure updates repo is enabled (important for i386 libs)
+      apt_repository:
+        repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }}-updates main universe multiverse restricted"
+        state: present
+
+    - name: Update apt cache AFTER adding repos and i386
+      apt:
+        update_cache: yes
+    
     - name: Install Steam
       apt:
         name: steam-installer
