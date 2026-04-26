@@ -13,11 +13,6 @@
         name: mc
         state: present
      # --- Steam ---
-    - name: Ensure multiverse repo is enabled
-      apt_repository:
-        repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
-        state: present
-
     - name: Install Steam
       apt:
         name: steam
